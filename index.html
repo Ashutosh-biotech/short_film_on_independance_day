@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="w3.js"></script>
+    <script src="sweetalert.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="Picture1.png" type="image/x-icon">
+    <title>Short Film - Happy Independence Day</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cascadia Code', 'Comic Sans MS', 'Lucida Handwriting', serif;
+            /* cursor: none; */
+        }
+
+        html {
+            overflow: hidden;
+        }
+
+        body {
+            height: 100vh;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .year-of-independence {
+            position: absolute;
+            font-size: 5.2rem;
+            top: 10px;
+            right: 170px;
+            color: rgb(6, 135, 248);
+            text-shadow: 2px 1px 5px currentColor;
+        }
+
+        .white {
+            color: #000 !important;
+            background-color: #fff !important;
+        }
+
+        .top {
+            position: fixed;
+            width: 100%;
+            z-index: 1;
+            top: 0;
+        }
+
+        .loader {
+            border: 16px solid rgba(243, 243, 243, 0);
+            border-radius: 50%;
+            border-top: 16px solid #0a5d93;
+            border-bottom: 16px solid #d70e41;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .display-middle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+        }
+
+        .display-right {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+        }
+
+        .hide {
+            display: none;
+        }
+
+        ::selection {
+            text-shadow: 2px 2px 3px currentColor;
+            background-color: transparent;
+            color: currentColor;
+        }
+
+        ::-moz-selection {
+            text-shadow: 2px 2px 3px currentColor;
+            background-color: transparent;
+            color: currentColor;
+        }
+
+        :root {
+            --animate-duration: 1s;
+            --animate-delay: 1s;
+            --animate-repeat: 1
+        }
+
+        .ai_animated {
+            -webkit-animation-duration: var(--animate-duration);
+            animation-duration: var(--animate-duration);
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both
+        }
+
+        .ai_animated.ai_infinite {
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite
+        }
+
+        .ai_animated.ai_repeat-1 {
+            -webkit-animation-iteration-count: var(--animate-repeat);
+            animation-iteration-count: var(--animate-repeat)
+        }
+
+        .ai_animated.ai_repeat-2 {
+            -webkit-animation-iteration-count: calc(var(--animate-repeat) * 2);
+            animation-iteration-count: calc(var(--animate-repeat) * 2)
+        }
+
+        .ai_animated.ai_repeat-3 {
+            -webkit-animation-iteration-count: calc(var(--animate-repeat) * 3);
+            animation-iteration-count: calc(var(--animate-repeat) * 3)
+        }
+
+        .ai_animated.ai_delay-1s {
+            -webkit-animation-delay: var(--animate-delay);
+            animation-delay: var(--animate-delay)
+        }
+
+        @media (prefers-reduced-motion: reduce),
+        print {
+            .ai_animated {
+                -webkit-animation-duration: 1ms !important;
+                animation-duration: 1ms !important;
+                -webkit-transition-duration: 1ms !important;
+                transition-duration: 1ms !important;
+                -webkit-animation-iteration-count: 1 !important;
+                animation-iteration-count: 1 !important
+            }
+
+            .ai_animated[class*=Out] {
+                opacity: 0
+            }
+        }
+
+        @-webkit-keyframes fadeIn {
+            0% {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        .ai_fadeIn {
+            -webkit-animation-name: fadeIn;
+            animation-name: fadeIn
+        }
+
+        #img_collection img {
+            height: 100px;
+            width: 100px;
+        }
+
+        @-webkit-keyframes slideInUp {
+            0% {
+                -webkit-transform: translate3d(0, 100%, 0);
+                transform: translate3d(0, 100%, 0);
+                visibility: visible
+            }
+
+            to {
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0)
+            }
+        }
+
+        @keyframes slideInUp {
+            0% {
+                -webkit-transform: translate3d(0, 100%, 0);
+                transform: translate3d(0, 100%, 0);
+                visibility: visible
+            }
+
+            to {
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0)
+            }
+        }
+
+        .ai_slideInUp {
+            -webkit-animation-name: slideInUp;
+            animation-name: slideInUp
+        }
+
+        .text-red {
+            color: rgb(34, 93, 255);
+            text-transform: uppercase;
+            position: absolute;
+            left: 1%;
+            font-size: 50px;
+            text-shadow: 2px 1px 5px currentColor;
+        }
+
+        #img_collection img {
+            height: 450px;
+            width: 500px;
+            top: 50%;
+            left: 1%;
+            box-shadow: 10px 10px 10px #000;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body onload="document.querySelector('#loader').style.display='none';setup()"
+    style="background-image: url(wallpaperflare.com_wallpaper.jpg);">
+    <audio autoplay id="bg_music">
+        <source src="music.mp3">
+    </audio>
+    <div style="height: 100vh;width: 100vw;z-index: 9999;display: block;" class="white top" id="loader">
+        <div class="display-middle">
+            <div class="loader"></div>
+        </div>
+    </div>
+    <img src="wallpaperflare.com_wallpaper.jpg" class="hide">
+    <img src="netaji.gif" class="hide">
+    <img src="id_mastercomp_v2.gif" class="hide">
+    <img src="wallpaperflare.com_wallpaper (2).jpg" class="hide">
+    <img src="19896.netaji1b.png" class="hide display-right ai_animated ai_fadeIn" id="scb-img" draggable="false">
+    <img src="220px-Janakinath_Bose.jpg" class="hide display-right ai_animated ai_fadeIn" id="scbimg" draggable="false"
+        style="height: 400px;border-radius: 10px;border: 5px solid #000;">
+    <div id="img_collection">
+        <img src="pics/x (3).png" alt="" id="img_3" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (4).png" alt="" id="img_4" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (5).png" alt="" id="img_5" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (7).png" alt="" id="img_7" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (9).png" alt="" id="img_9" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (10).png" alt="" id="img_10" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (11).png" alt="" id="img_11" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (12).png" alt="" id="img_12" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (13).png" alt="" id="img_13" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (14).png" alt="" id="img_14" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (15).png" alt="" id="img_15" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (16).png" alt="" id="img_16" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (17).png" alt="" id="img_17" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (18).png" alt="" id="img_18" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (19).png" alt="" id="img_19" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (20).png" alt="" id="img_20" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (21).png" alt="" id="img_21" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (22).png" alt="" id="img_22" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (23).png" alt="" id="img_23" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (24).png" alt="" id="img_24" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+        <img src="pics/x (25).png" alt="" id="img_25" style="position: absolute;display: none;"
+            class="ai_animated ai_slideInUp">
+    </div>
+
+    <span class="year-of-independence">75<sup>th</sup></span>
+
+    <span class="text-to-render ai_animate ai_slideInUp text-red" style="display: none;top: 50%;">Born in Cuttack</span>
+
+    <audio id="intro_music">
+        <source src="audio-1.wav">
+    </audio>
+
+    <audio id="more_music" ontimeupdate="render_images_and_text(this)">
+        <source src="audio-2.wav">
+    </audio>
+
+</body>
+<script>
+    const sleep = milliseconds => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    };
+
+    let music = document.querySelector('#bg_music');
+    let intro_music = document.querySelector('#intro_music');
+    let more_music = document.querySelector('#more_music');
+    let render_image_number = 3;
+    let repeat = true;
+
+    function setup() {
+        setTimeout(() => {
+            document.querySelector('body').style.backgroundImage =
+                "url('wallpaperflare.com_wallpaper (2).jpg')";
+            document.querySelector('.year-of-independence').classList.add('hide');
+            document.querySelector('#scb-img').classList.remove('hide');
+            music.volume = 0.2;
+            intro_music.setAttribute("autoplay", "");
+            sleep(3000).then(() => {
+                more_music.setAttribute("autoplay", "");
+            })
+        }, 2000);
+    }
+
+    const render_images_and_text = (tag) => {
+        if (Math.floor(tag.currentTime) === 1) {
+            document.querySelector('.text-to-render').innerHTML = "Born in Cuttack";
+            document.querySelector('.text-to-render').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 3) {
+            document.querySelector('.text-to-render').innerHTML = "On january 23<br>1897";
+        }
+        if (Math.floor(tag.currentTime) === 6) {
+            document.querySelector('.text-to-render').innerHTML = "Mother <u>Prabhavati</u>";
+        }
+        if (Math.floor(tag.currentTime) === 8) {
+            document.querySelector('.text-to-render').innerHTML = "Father <br><u>jankinath bose</u><br>(lawyer)";
+            document.querySelector('#scbimg').classList.remove('hide');
+        }
+        if (Math.floor(tag.currentTime) === 12) {
+            document.querySelector('.text-to-render').innerHTML = "";
+            document.querySelector('#scbimg').classList.add('hide');
+        }
+        if (Math.floor(tag.currentTime) === 13) {
+            document.querySelector('#img_4').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 17) {
+            document.querySelector('#img_4').style.display = 'none';
+            document.querySelector('#img_5').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 40) {
+            document.querySelector('#img_5').style.display = 'none';
+            document.querySelector('#img_7').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 47) {
+            document.querySelector('#img_7').style.display = 'none';
+            document.querySelector('#img_9').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 54) {
+            document.querySelector('#img_9').style.display = 'none';
+            document.querySelector('#img_20').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 63) {
+            document.querySelector('#img_20').style.display = 'none';
+            document.querySelector('#img_21').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 67) {
+            document.querySelector('#img_21').style.display = 'none';
+            document.querySelector('#img_22').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 77) {
+            document.querySelector('#img_22').style.display = 'none';
+            document.querySelector('#img_23').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 79) {
+            document.querySelector('#img_23').style.display = 'none';
+            document.querySelector('#img_24').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 87) {
+            document.querySelector('#img_24').style.display = 'none';
+            document.querySelector('#img_25').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 100) {
+            document.querySelector('#img_25').style.display = 'none';
+            document.querySelector('#img_3').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 110) {
+            document.querySelector('#img_3').style.display = 'none';
+            document.querySelector('#img_13').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 120) {
+            document.querySelector('#img_13').style.display = 'none';
+            document.querySelector('#img_14').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 127) {
+            document.querySelector('#img_14').style.display = 'none';
+            document.querySelector('#img_15').style.display = 'block';
+        }
+        if (Math.floor(tag.currentTime) === 133) {
+            document.querySelector('#img_15').style.display = 'none';
+            document.querySelector('#img_16').style.display = 'block';
+        }
+        if ((Math.floor(tag.currentTime) === 135) && (repeat)) {
+            music.volume = 1;
+            document.querySelector('#img_16').style.display = 'none';
+            document.querySelector('.text-to-render').innerHTML =
+                "He also gave us one of the famous slogan → 'Tum mujhe khun doo, me tumhe aajaadi dunga'";
+            document.querySelector('.text-to-render').style.display = 'block';
+            document.querySelector('.text-to-render').style.top = '0%';
+            sleep(5000).then(() => {
+                repeat = false;
+                document.querySelector('#scb-img').classList.add('hide');
+                document.querySelector('.text-to-render').style.display = 'none';
+                soundoff()
+            })
+        }
+    }
+
+    function soundoff() {
+        document.querySelector('body').style.backgroundImage = "url('netaji.gif')";
+        sleep(2000).then(() => {
+            document.querySelector('body').style.backgroundImage = "url('id_mastercomp_v2.gif')";
+            sleep(3000).then(() => {
+                document.querySelector('body').style.backgroundImage = "url('11597201854xxd.gif')";
+            });
+        });
+    }
+</script>
+
+</html>
